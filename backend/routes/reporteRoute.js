@@ -6,7 +6,7 @@ const reporteController = require('../controllers/reporteController');
 router.get('/', reporteController.listarReportes);
 // Criar reporte
 router.post('/', reporteController.criarReporte);
-// Atualizar status do reporte (ex: validar, assinar)
-router.patch('/:id', reporteController.atualizarStatusReporte);
+// Atualizar status do reporte 
+router.put('/:id/status', reporteController.atualizarStatusReporte);
 
 module.exports = router;

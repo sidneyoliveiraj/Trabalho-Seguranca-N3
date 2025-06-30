@@ -26,7 +26,7 @@ export default function Login() {
       // Salva o token no localStorage para usar em outras páginas
       localStorage.setItem("token", resposta.data.token);
 
-      // Redireciona para dashboard (ajuste para usar roteamento se quiser)
+      // Redireciona para dashboard 
       setTimeout(() => {
         window.location.href = "/dashboard";
       }, 1500);

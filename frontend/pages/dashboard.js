@@ -7,7 +7,7 @@ export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redireciona para login se não tiver token
+    
     if (!localStorage.getItem("token")) {
       router.push("/login");
     }

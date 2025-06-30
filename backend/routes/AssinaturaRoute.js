@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const assinaturaController = require('../controllers/AssinaturaController');
 
-// Criar assinatura digital de um relatório
+// Criar assinatura digital de um relatório 
 router.post('/', assinaturaController.criarAssinatura);
 
 // Listar todas as assinaturas digitais
