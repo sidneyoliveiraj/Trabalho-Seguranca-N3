@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import {
   Button, Typography, Container, Box, TextField, MenuItem, Alert
 } from "@mui/material";
@@ -16,10 +16,9 @@ export default function SubmitExpense() {
   const [erro, setErro] = useState("");
 
   useEffect(() => {
-    // Busca os funcionários para preencher o select
     async function fetchColaboradores() {
       try {
-        const resp = await axios.get("http://localhost:5000/api/empregados");
+        const resp = await api.get("empregados");
         setColaboradores(resp.data);
       } catch {
         setErro("Erro ao buscar funcionários");
@@ -37,7 +36,7 @@ export default function SubmitExpense() {
     setMensagem("");
     setErro("");
     try {
-      await axios.post("http://localhost:5000/api/reportes", form);
+      await api.post("reportes", form);
       setMensagem("Relatório de despesa enviado com sucesso!");
       setForm({ colaborador: "", valor: "", descricao: "", recibo: "" });
     } catch (err) {

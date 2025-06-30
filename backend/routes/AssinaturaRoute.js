@@ -1,14 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const assinaturaController = require('../controllers/AssinaturaController');
+const { auth, permitirCargos } = require('../middleware/auth');
 
-// Criar assinatura digital de um relatório 
-router.post('/', assinaturaController.criarAssinatura);
-
-// Listar todas as assinaturas digitais
-router.get('/', assinaturaController.listarAssinaturas || ((req, res) => res.json([])));
-
-// Verificar assinatura digital
-router.post('/verificar', assinaturaController.verificarAssinatura);
+// Apenas gerente pode assinar. Todos autenticados podem listar/verificar.
+router.post('/', auth, permitirCargos('gerente'), assinaturaController.criarAssinatura);
+router.get('/', auth, assinaturaController.listarAssinaturas);
+router.post('/verificar', auth, permitirCargos('diretor', 'gerente'), assinaturaController.verificarAssinatura);
 
 module.exports = router;

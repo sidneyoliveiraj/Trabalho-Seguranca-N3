@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const reporteController = require('../controllers/reporteController');
+const { auth, permitirCargos } = require('../middleware/auth');
 
-// Listar todos reportes
-router.get('/', reporteController.listarReportes);
-// Criar reporte
-router.post('/', reporteController.criarReporte);
-// Atualizar status do reporte 
-router.put('/:id/status', reporteController.atualizarStatusReporte);
+// Apenas autenticados podem criar/listar. Só gerente pode aprovar/rejeitar.
+router.get('/', auth, reporteController.listarReportes);
+router.post('/', auth, permitirCargos('funcionario', 'gerente'), reporteController.criarReporte);
+router.put('/:id/status', auth, permitirCargos('gerente'), reporteController.atualizarStatusReporte);
 
 module.exports = router;

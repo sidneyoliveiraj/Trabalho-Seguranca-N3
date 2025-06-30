@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import {
   Container, Box, Typography, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Paper, Button, Alert, MenuItem, Select
@@ -16,8 +16,7 @@ export default function PendingExpenses() {
 
   const listarReportes = async () => {
     try {
-      const resp = await axios.get("http://localhost:5000/api/reportes");
-      // Filtra só pendentes (ou ajuste se quiser todos)
+      const resp = await api.get("reportes");
       setReportes(resp.data.filter(r => !r.status || r.status === "pendente"));
     } catch {
       setErro("Erro ao buscar relatórios.");
@@ -26,7 +25,7 @@ export default function PendingExpenses() {
 
   const atualizarStatus = async (id, novoStatus) => {
     try {
-      await axios.put(`http://localhost:5000/api/reportes/${id}/status`, { status: novoStatus });
+      await api.put(`reportes/${id}/status`, { status: novoStatus });
       setMensagem(`Relatório ${novoStatus === "aprovado" ? "aprovado" : "rejeitado"}!`);
       listarReportes();
     } catch {

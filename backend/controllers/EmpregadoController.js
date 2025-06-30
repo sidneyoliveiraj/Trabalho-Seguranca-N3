@@ -13,6 +13,9 @@ exports.listarEmpregados = async (req, res) => {
 exports.criarEmpregado = async (req, res) => {
   try {
     const { nome, email, senha, cargo } = req.body;
+    if (!nome || !email || !senha || !cargo) {
+      return res.status(400).json({ msg: 'Todos os campos são obrigatórios!' });
+    }
     const usuarioExistente = await Usuario.findOne({ email });
     if (usuarioExistente) {
       return res.status(400).json({ msg: 'E-mail já cadastrado!' });
@@ -30,8 +33,10 @@ exports.atualizarEmpregado = async (req, res) => {
   try {
     const { id } = req.params;
     const dados = req.body;
-    if (dados.senha) {
+    if (dados.senha && dados.senha !== "") {
       dados.senha = await bcrypt.hash(dados.senha, 10);
+    } else {
+      delete dados.senha;
     }
     await Usuario.findByIdAndUpdate(id, dados);
     res.json({ msg: 'Empregado atualizado com sucesso!' });

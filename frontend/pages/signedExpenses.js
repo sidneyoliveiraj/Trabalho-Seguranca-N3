@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import {
   Container, Box, Typography, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Button
@@ -11,7 +11,7 @@ export default function SignedExpenses() {
   const router = useRouter();
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/assinaturas")
+    api.get("assinaturas")
       .then(res => setAssinaturas(res.data));
   }, []);
 

@@ -1,6 +1,5 @@
-// frontend/pages/login.js
 import { useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { TextField, Button, Typography, Container, Box, Alert } from "@mui/material";
 
 export default function Login() {
@@ -13,23 +12,13 @@ export default function Login() {
     e.preventDefault();
     setMensagem("");
     setSucesso(false);
-
     try {
-      const resposta = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        senha,
-      });
-
+      const resposta = await api.post("auth/login", { email, senha });
       setMensagem("Login realizado com sucesso!");
       setSucesso(true);
-
-      // Salva o token no localStorage para usar em outras páginas
       localStorage.setItem("token", resposta.data.token);
-
-      // Redireciona para dashboard 
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 1500);
+      localStorage.setItem("cargo", resposta.data.usuario.cargo);
+      setTimeout(() => { window.location.href = "/dashboard"; }, 1500);
     } catch (error) {
       setMensagem(error?.response?.data?.msg || "Erro ao fazer login");
       setSucesso(false);
@@ -41,26 +30,9 @@ export default function Login() {
       <Box className="shadow-xl p-8 rounded-xl bg-white w-full">
         <Typography variant="h4" align="center" className="mb-6 font-bold">Login</Typography>
         <form onSubmit={handleLogin} className="space-y-4">
-          <TextField
-            label="E-mail"
-            variant="outlined"
-            fullWidth
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            label="Senha"
-            type="password"
-            variant="outlined"
-            fullWidth
-            required
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-          />
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Entrar
-          </Button>
+          <TextField label="E-mail" variant="outlined" fullWidth required value={email} onChange={(e) => setEmail(e.target.value)} />
+          <TextField label="Senha" type="password" variant="outlined" fullWidth required value={senha} onChange={(e) => setSenha(e.target.value)} />
+          <Button type="submit" variant="contained" color="primary" fullWidth>Entrar</Button>
         </form>
         {mensagem && (
           <Alert severity={sucesso ? "success" : "error"} className="mt-4">

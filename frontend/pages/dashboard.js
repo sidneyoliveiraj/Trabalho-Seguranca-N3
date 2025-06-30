@@ -1,18 +1,12 @@
-// frontend/pages/dashboard.js
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button, Typography, Container, Box, Grid } from "@mui/material";
 
 export default function Dashboard() {
   const router = useRouter();
-
   useEffect(() => {
-    
-    if (!localStorage.getItem("token")) {
-      router.push("/login");
-    }
+    if (!localStorage.getItem("token")) router.push("/login");
   }, []);
-
   return (
     <Container maxWidth="md" className="flex flex-col items-center justify-center min-h-screen">
       <Box className="shadow-xl p-8 rounded-xl bg-white w-full text-center">

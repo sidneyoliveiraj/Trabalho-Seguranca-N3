@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { useRouter } from "next/router";
 import { Container, Box, Typography, Button, Alert } from "@mui/material";
 
@@ -11,17 +11,13 @@ export default function VerifySignature() {
 
   useEffect(() => {
     const { id } = router.query;
-    if (id) {
-      setAssinatura(id);
-    }
+    if (id) setAssinatura(id);
   }, [router.query]);
 
   const verificar = async () => {
     setMsg(""); setErro("");
     try {
-      const resp = await axios.post("http://localhost:5000/api/assinaturas/verificar", {
-        assinaturaId: assinatura
-      });
+      const resp = await api.post("assinaturas/verificar", { assinaturaId: assinatura });
       setMsg(resp.data.msg);
     } catch (err) {
       setErro(err.response?.data?.msg || "Erro ao verificar assinatura");
